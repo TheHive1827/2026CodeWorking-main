@@ -70,6 +70,10 @@ public final class Constants {
     public static final int IntakeCanID2 = 10;
   }
 
+  public static final class PhotonConstants{
+    public static final double examplevariable = 0;
+  }
+
   public static final class ShooterConstants{
     public static final int ShooterCANID = 11;
   }
