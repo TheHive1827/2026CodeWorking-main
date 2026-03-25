@@ -51,23 +51,24 @@ public final class Constants {
     public static final double kBackRightChassisAngularOffset = Math.PI / 2;
 
     // SPARK MAX CAN IDs
-    public static final int kFrontLeftDrivingCanId = 2;
-    public static final int kRearLeftDrivingCanId = 6;
-    public static final int kFrontRightDrivingCanId = 4;
-    public static final int kRearRightDrivingCanId = 8;
+    public static final int kFrontLeftDrivingCanId = 16;
+    public static final int kRearLeftDrivingCanId = 17;
+    public static final int kFrontRightDrivingCanId = 15;
+    public static final int kRearRightDrivingCanId = 14;
 
-    public static final int kFrontLeftTurningCanId = 1;
-    public static final int kRearLeftTurningCanId = 5;
-    public static final int kFrontRightTurningCanId = 3;
-    public static final int kRearRightTurningCanId = 7;
+    public static final int kFrontLeftTurningCanId = 12;
+    public static final int kRearLeftTurningCanId = 13;
+    public static final int kFrontRightTurningCanId = 11;
+    public static final int kRearRightTurningCanId = 10;
     // public static final int IntakeCanID = 9;
 
     public static final boolean kGyroReversed = false;
   }
 
   public static final class IntakeConstants{
-    public static final int IntakeCanID = 9;
-    public static final int IntakeCanID2 = 10;
+    public static final int ConveyorCanID = 5;
+    public static final int IntakeControlCanID = 7;
+    public static final int IntakeSpinCanID = 8;
   }
 
   public static final class PhotonConstants{
@@ -78,7 +79,8 @@ public final class Constants {
   }
 
   public static final class ShooterConstants{
-    public static final int ShooterCANID = 11;
+    public static final int VectorIndexCANID = 6;
+    public static final int ShooterWheelCANID = 9;
   }
 
   public static final class ModuleConstants {
