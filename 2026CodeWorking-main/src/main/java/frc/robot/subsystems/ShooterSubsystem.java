@@ -34,7 +34,7 @@ public class ShooterSubsystem extends SubsystemBase{
     private final double GRAVITY = -9.81;
     private final double SHOOTERHEIGHT = 0.45;
     private final double HOPPERHEIGHT = 3;
-    private  double shooterDistance = 0;
+    public double shooterDistance = 0;
     private final double SHOOTERANGLE = Math.toRadians(75);
     private final double BALLMASS = 0.4;
     private final double TORQUESLOPE = -2.55 / 5676;
