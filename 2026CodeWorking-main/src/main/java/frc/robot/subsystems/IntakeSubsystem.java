@@ -21,30 +21,48 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.Configs;
 import frc.robot.Constants.IntakeConstants;
+import frc.robot.Constants.ShooterConstants;
 
 public class IntakeSubsystem extends SubsystemBase{
-    private final SparkMax m_IntakeMotor = new SparkMax(IntakeConstants.IntakeCanID, MotorType.kBrushless);
-    private final SparkMax m_IntakeMotor2 = new SparkMax(IntakeConstants.IntakeCanID, MotorType.kBrushless);
+    // private final SparkMax m_IntakeMotor = new SparkMax(IntakeConstants.IntakeCanID, MotorType.kBrushless);
+    // private final SparkMax m_IntakeMotor2 = new SparkMax(IntakeConstants.IntakeCanID, MotorType.kBrushless);
+    private final SparkMax IntakeControl = new SparkMax(IntakeConstants.IntakeControlCanID, MotorType.kBrushless);
+    private final SparkMax IntakeSpin = new SparkMax(IntakeConstants.IntakeSpinCanID, MotorType.kBrushless);
     double MaxSpeed;
     public void periodic(){
         // MaxSpeed = SmartDashboard.getNumber("Intake Speed", 0);
         MaxSpeed = 0.25;
     }
 
-    // public void Intake(boolean forward, boolean back){
-    public void Intake(int speed){
-        // speed = 0;
-        // if (forward == true){
-        //     speed++;
-        // }
-        // if (back == true){
-        //     speed--;
-        // }
-        m_IntakeMotor.set(MaxSpeed*speed);
+
+    public void IntakePeriodic(){
+        // SmartDashboard.putNumber("IntakeControl", SparkMax.getBus);
     }
 
-    public void Intake2(int speed){
-        m_IntakeMotor2.set(MaxSpeed*speed);
-    }
+
+    public void controlrun(double speed){
+    IntakeControl.set(speed/4);
+  }
+
+      public void spinrun(double speed){
+    IntakeSpin.set(speed/4);
+  }
+    // public void Intake(boolean forward, boolean back){
+    // public void Intake(int speed){
+    //     speed = 0;
+    //     if (forward == true){
+    //         speed++;
+    //     }
+    //     if (back == true){
+    //         speed--;
+    //     }
+    //     m_IntakeMotor.set(MaxSpeed*speed);
+    // }
+
+    // public void Intake2(int speed){
+    //     m_IntakeMotor2.set(MaxSpeed*speed);
+    // }
+
+    // public void IntakeControl
     // IDK WHAT THE POINT OF THIS IS BUT ILL GUESS WE'LL SEE
 }

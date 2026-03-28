@@ -28,7 +28,8 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import frc.robot.Configs;
 import frc.robot.Constants;
 public class ShooterSubsystem extends SubsystemBase{
-    private final SparkMax m_Shooter = new SparkMax(ShooterConstants.ShooterCANID, MotorType.kBrushless);
+    private final SparkMax m_Shooter = new SparkMax(ShooterConstants.ShooterWheelCANID, MotorType.kBrushless);
+    private final SparkMax m_Conveyor = new SparkMax(ShooterConstants.ConveyorCanID, MotorType.kBrushless);
 
     private final double WHEELRADIUS = 0.04;
     private final double GRAVITY = -9.81;
@@ -74,6 +75,10 @@ public class ShooterSubsystem extends SubsystemBase{
     shooterDistance = SmartDashboard.getNumber("Shooter Distance", 0);
     double shooterSpeed = calculateShooterSpeed(shooterDistance);
     m_elevatorPID.setSetpoint(shooterSpeed, ControlType.kVelocity);
+  }
+
+  public void conveyorrun(double speed){
+    m_Conveyor.set(speed/4);
   }
 
   public double calculateShooterSpeed(double distance) {

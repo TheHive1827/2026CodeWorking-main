@@ -66,7 +66,6 @@ public final class Constants {
   }
 
   public static final class IntakeConstants{
-    public static final int ConveyorCanID = 5;
     public static final int IntakeControlCanID = 7;
     public static final int IntakeSpinCanID = 8;
   }
@@ -75,12 +74,18 @@ public final class Constants {
     public static final double examplevariable = 0;
     public static final double AprilTag16Height = 3;
     public static final double ArenaTagHeight = 44.25; // inches
-    public static final double CameraHeight = 24; // inches, again. 
+    public static final double CameraHeight = 24; // inches, again.
+  }
+
+  public static final class ApriltagConstants{
+    public static final int BlueBack = 31; 
   }
 
   public static final class ShooterConstants{
     public static final int VectorIndexCANID = 6;
     public static final int ShooterWheelCANID = 9;
+    public static final int ConveyorCanID = 5;
+
   }
 
   public static final class ModuleConstants {
@@ -102,6 +107,7 @@ public final class Constants {
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kShooterControllerPort = 1;
     public static final double kDriveDeadband = 0.05;
   }
 
