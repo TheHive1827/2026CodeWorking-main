@@ -67,7 +67,7 @@ public final class Constants {
 
   public static final class IntakeConstants{
     public static final int IntakeControlCanID = 7;
-    public static final int IntakeSpinCanID = 8;
+    public static final int IntakeSpinCanID =  8;
   }
 
   public static final class PhotonConstants{

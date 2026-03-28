@@ -34,7 +34,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 
 
 public class PhotonSubsystem {
-
+    
     PhotonCamera camera = new PhotonCamera("photonvision");
     private final ShooterSubsystem m_shooter = new ShooterSubsystem();
     // private final PhotonCamera photonCamera;
@@ -42,6 +42,14 @@ public class PhotonSubsystem {
     double DistanceX = 1;
     double DistanceY = 1;
     double DistanceZ = 1;
+    boolean targetVisible = false;
+     double targetYaw = 0.0;
+    double targetPitch = 0.0;
+    double TargetHeight = 0.0;
+    // var camToTarget = target.getBestCameraToTarget();
+     double PhotonDistance = 0.0; 
+    double targetX;
+    
 
     // public void resultget(){
     //     // PhotonPipelineResult result = camera.getLatestResult();
@@ -59,18 +67,22 @@ public class PhotonSubsystem {
 //     Transform3d alternateCameraToTarget = target.getAlternateCameraToTarget();
 // }
 
+    public void periodic(){
+        SmartDashboard.putNumber("Target Yaw", targetYaw);
+    }
+
     public void read(){
         var results = camera.getAllUnreadResults();
         if (!results.isEmpty()) {
             // Camera processed a new frame since last
             // Get the last one in the list.
-            boolean targetVisible = false;
-            var targetYaw = 0.0;
-            var targetPitch = 0.0;
-            var TargetHeight = 0.0;
-            var camToTarget = target.getBestCameraToTarget();
-            double PhotonDistance = 0.0; 
-            double targetX;
+            targetVisible = false;
+            targetYaw = 0.0;
+            targetPitch = 0.0;
+            TargetHeight = 0.0;
+            // var camToTarget = target.getBestCameraToTarget();
+            PhotonDistance = 0.0; 
+            // targetX;
             var result = results.get(results.size() - 1);
             if (result.hasTargets()) {
                 // At least one AprilTag was seen by the camera

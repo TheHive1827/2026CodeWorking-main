@@ -3,6 +3,7 @@ import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
 
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -17,21 +18,35 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
+
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.Configs;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.Constants.OIConstants;
 
 public class IntakeSubsystem extends SubsystemBase{
+  // XboxController m_shooterController = new XboxController(OIConstants.kShooterControllerPort);
+  // private ShooterSubsystem m_shooter = new ShooterSubsystem();
     // private final SparkMax m_IntakeMotor = new SparkMax(IntakeConstants.IntakeCanID, MotorType.kBrushless);
     // private final SparkMax m_IntakeMotor2 = new SparkMax(IntakeConstants.IntakeCanID, MotorType.kBrushless);
+    // private final 
     private final SparkMax IntakeControl = new SparkMax(IntakeConstants.IntakeControlCanID, MotorType.kBrushless);
     private final SparkMax IntakeSpin = new SparkMax(IntakeConstants.IntakeSpinCanID, MotorType.kBrushless);
-    double MaxSpeed;
+    private final RelativeEncoder ControlEncoder = IntakeControl.getEncoder();
+    double MaxSpeed = 0.25;
+
     public void periodic(){
-        // MaxSpeed = SmartDashboard.getNumber("Intake Speed", 0);
-        MaxSpeed = 0.25;
+      SmartDashboard.putNumber("Control Encoder Position: ", ControlEncoder.getPosition());
+      SmartDashboard.putString("Kendall-O-Meter: ", "yes");
+    }
+
+    public void InitEncoder(){
+      ControlEncoder.setPosition(0.0);
     }
 
 
@@ -41,12 +56,23 @@ public class IntakeSubsystem extends SubsystemBase{
 
 
     public void controlrun(double speed){
-    IntakeControl.set(speed/4);
+    IntakeControl.set(speed/5);
+  }
+
+  public void vortexrun(double speed){
+    IntakeControl.set(speed/5);
   }
 
       public void spinrun(double speed){
-    IntakeSpin.set(speed/4);
+    IntakeSpin.set(-speed/5);
   }
+
+  // public void RunAll(double speed){
+  //   IntakeSpin.set(-speed/5);
+  //   m_shooter.m_Conveyor.set(speed/5);
+  //   m_shooter.m_Vector.set(speed/5);
+  //   m_shooter.m_Shooter.set(speed/5);
+  // }
     // public void Intake(boolean forward, boolean back){
     // public void Intake(int speed){
     //     speed = 0;

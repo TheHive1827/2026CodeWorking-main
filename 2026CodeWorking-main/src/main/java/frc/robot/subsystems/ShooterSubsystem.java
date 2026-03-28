@@ -30,6 +30,7 @@ import frc.robot.Constants;
 public class ShooterSubsystem extends SubsystemBase{
     private final SparkMax m_Shooter = new SparkMax(ShooterConstants.ShooterWheelCANID, MotorType.kBrushless);
     private final SparkMax m_Conveyor = new SparkMax(ShooterConstants.ConveyorCanID, MotorType.kBrushless);
+        public final SparkMax m_Vector = new SparkMax(ShooterConstants.VectorIndexCANID, MotorType.kBrushless);
 
     private final double WHEELRADIUS = 0.04;
     private final double GRAVITY = -9.81;
@@ -78,7 +79,19 @@ public class ShooterSubsystem extends SubsystemBase{
   }
 
   public void conveyorrun(double speed){
-    m_Conveyor.set(speed/4);
+    m_Conveyor.set(-speed/4);
+    
+  }
+
+  public void vectorrun(double speed){
+    m_Vector.set(-speed/4);
+    
+  }
+
+  public void multiple_run(double speed){
+    m_Vector.set(-speed/4);
+    m_Conveyor.set(-speed/4);
+
   }
 
   public double calculateShooterSpeed(double distance) {

@@ -40,6 +40,9 @@ public class RobotContainer {
   private final IntakeSubsystem m_Intake = new IntakeSubsystem();
   private final ShooterSubsystem m_shooter = new ShooterSubsystem();
 
+
+  private final 
+
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   XboxController m_shooterController = new XboxController(OIConstants.kShooterControllerPort);
@@ -62,6 +65,8 @@ public class RobotContainer {
                 -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
                 true),
             m_robotDrive));
+
+            
             
 
 
@@ -95,8 +100,9 @@ public class RobotContainer {
             () -> m_robotDrive.zeroHeading(),
             m_robotDrive));
             
-        new JoystickButton(m_shooterController, XboxController.Button.kA.value)
+        new JoystickButton(m_shooterController, XboxController.Button.kX.value)
             .whileTrue(new RunCommand(() -> m_shooter.conveyorrun(XboxController.Button.kA.value),
+             m_shooter)).whileFalse(new RunCommand(() -> m_shooter.conveyorrun(0.0),
              m_shooter));
 
         
@@ -104,11 +110,34 @@ public class RobotContainer {
             .whileTrue(new RunCommand(() -> m_Intake.controlrun(XboxController.Button.kLeftBumper.value),
              m_Intake));
 
-        new JoystickButton(m_shooterController, XboxController.Button.kB.value)
-            .whileTrue(new RunCommand(() -> m_Intake.spinrun(XboxController.Button.kB.value),
+        new JoystickButton(m_shooterController, XboxController.Button.kRightBumper.value)
+            .whileTrue(new RunCommand(() -> m_Intake.spinrun(1),
+             m_Intake)).onFalse(new RunCommand(() -> m_Intake.spinrun(0.0),
              m_Intake));
 
-  
+        new JoystickButton(m_shooterController, XboxController.Button.kLeftBumper.value)
+            .whileTrue(new RunCommand(() -> m_Intake.spinrun(-1),
+             m_Intake)).onFalse(new RunCommand(() -> m_Intake.spinrun(0.0),
+             m_Intake));
+        
+        new JoystickButton(m_shooterController, XboxController.Button.kY.value)
+            .whileTrue(new RunCommand(() -> Tierslop(1),
+             m_Intake)).onFalse(new RunCommand(() -> Tierslop(0.0),
+             m_Intake));
+
+        new JoystickButton(m_shooterController, XboxController.Button.kA.value)
+            .whileTrue(new RunCommand(() -> Tierslop(1),
+             m_Intake)).onFalse(new RunCommand(() -> Tierslop(0.0),
+             m_Intake));
+
+ 
+  }
+
+
+  public void Tierslop(double speed){
+    m_Intake.spinrun(speed);
+    m_shooter.conveyorrun(speed);
+    m_shooter.vectorrun(speed);
   }
 
   /**
