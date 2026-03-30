@@ -43,6 +43,8 @@ public class IntakeSubsystem extends SubsystemBase{
     public void periodic(){
       SmartDashboard.putNumber("Control Encoder Position: ", ControlEncoder.getPosition());
       SmartDashboard.putString("Kendall-O-Meter: ", "yes");
+      SmartDashboard.putNumber("Intake Control Speed: ", IntakeControl.get());
+      SmartDashboard.putNumber("Intake Spin Speed: ", IntakeSpin.get());
     }
 
     public void InitEncoder(){

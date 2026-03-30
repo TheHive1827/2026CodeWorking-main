@@ -69,6 +69,9 @@ public class PhotonSubsystem {
 
     public void periodic(){
         SmartDashboard.putNumber("Target Yaw", targetYaw);
+        SmartDashboard.putNumber("Target Pitch", targetPitch);
+        SmartDashboard.putBoolean("Target Visible", targetVisible);
+        SmartDashboard.putNumber("Tag Found", target.getFiducialId());
     }
 
     public void read(){

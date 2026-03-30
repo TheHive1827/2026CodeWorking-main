@@ -76,6 +76,9 @@ public class ShooterSubsystem extends SubsystemBase{
     shooterDistance = SmartDashboard.getNumber("Shooter Distance", 0);
     double shooterSpeed = calculateShooterSpeed(shooterDistance);
     m_elevatorPID.setSetpoint(shooterSpeed, ControlType.kVelocity);
+    SmartDashboard.putNumber("Shooter Speed", shooterSpeed);
+    SmartDashboard.putNumber("Shooter Distance", shooterDistance);
+    SmartDashboard.putString("Shooter PID Controller", m_elevatorPID.toString());
   }
 
   public void conveyorrun(double speed){
