@@ -59,10 +59,6 @@ public class IntakeSubsystem extends SubsystemBase{
     IntakeControl.set(speed/5);
   }
 
-  public void vortexrun(double speed){
-    IntakeControl.set(speed/5);
-  }
-
       public void spinrun(double speed){
     IntakeSpin.set(-speed/5);
   }

@@ -24,7 +24,8 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
-  private IntakeSubsystem m_Intake;
+      // m_Intake.InitEncoder();
+  // private IntakeSubsystem m_Intake;
   // private PhotonSubsystem m_camera;
 
   /**
@@ -36,7 +37,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    m_Intake.InitEncoder();
+    // m_Intake.InitEncoder();
     // m_camera = new PhotonSubsystem();
 
   }

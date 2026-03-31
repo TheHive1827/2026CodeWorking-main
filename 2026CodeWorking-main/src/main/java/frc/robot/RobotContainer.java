@@ -39,9 +39,10 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final IntakeSubsystem m_Intake = new IntakeSubsystem();
   private final ShooterSubsystem m_shooter = new ShooterSubsystem();
+//   m_Intake.InitEncoder();
 
 
-  private final 
+//   private final 
 
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
@@ -52,10 +53,12 @@ public class RobotContainer {
    */
   public RobotContainer() {     
     // Configure the button bindings
+    m_Intake.InitEncoder();
     configureButtonBindings();
 
     // Configure default commands
     m_robotDrive.setDefaultCommand(
+        
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
@@ -106,9 +109,9 @@ public class RobotContainer {
              m_shooter));
 
         
-        new JoystickButton(m_shooterController, XboxController.Button.kLeftBumper.value)
-            .whileTrue(new RunCommand(() -> m_Intake.controlrun(XboxController.Button.kLeftBumper.value),
-             m_Intake));
+        new JoystickButton(m_shooterController, XboxController.Button.kB.value)
+            .whileTrue(new RunCommand(() -> m_Intake.controlrun(0.1),
+             m_Intake)).onFalse(new RunCommand(() -> m_Intake.controlrun(0), m_Intake));
 
         new JoystickButton(m_shooterController, XboxController.Button.kRightBumper.value)
             .whileTrue(new RunCommand(() -> m_Intake.spinrun(1),
