@@ -36,7 +36,7 @@ public class ShooterSubsystem extends SubsystemBase{
     private final double GRAVITY = -9.81;
     private final double SHOOTERHEIGHT = 0.45;
     private final double HOPPERHEIGHT = 3;
-    public double shooterDistance = 0;
+    public double shooterDistance = 1.5;
     private final double SHOOTERANGLE = Math.toRadians(75);
     private final double BALLMASS = 0.4;
     private final double TORQUESLOPE = -2.55 / 5676;
@@ -44,7 +44,7 @@ public class ShooterSubsystem extends SubsystemBase{
     private final double CONTACTLENGTH = 0.3;
     private final double TIMECONSTANT = 0.1;
     private final double BALLWEIGHT = BALLMASS * GRAVITY;
-
+    private double velocity = 0;
     public SparkClosedLoopController m_elevatorPID = m_Shooter.getClosedLoopController();
   RelativeEncoder encoder;
   public static final SparkMaxConfig motorConfig = new SparkMaxConfig();
@@ -56,7 +56,7 @@ public class ShooterSubsystem extends SubsystemBase{
         .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
         // Set PID values for position control. We don't need to pass a closed loop
         // slot, as it will default to slot 0.
-        .p(1.0)
+        .p(1.5)
         // speed
         .i(0.0)
         // integral
@@ -74,9 +74,9 @@ public class ShooterSubsystem extends SubsystemBase{
     
   public void periodic(){
     shooterDistance = SmartDashboard.getNumber("Shooter Distance", 0);
-    double shooterSpeed = calculateShooterSpeed(shooterDistance);
-    m_elevatorPID.setSetpoint(shooterSpeed, ControlType.kVelocity);
-    SmartDashboard.putNumber("Shooter Speed", shooterSpeed);
+    // double shooterSpeed = calculateShooterSpeed(1.5);
+    // m_elevatorPID.setSetpoint(shooterSpeed, ControlType.kVelocity);
+    SmartDashboard.putNumber("Shooter Speed", m_elevatorPID.getSetpoint());
     SmartDashboard.putNumber("Shooter Distance", shooterDistance);
     SmartDashboard.putString("Shooter PID Controller", m_elevatorPID.toString());
   }
@@ -91,16 +91,32 @@ public class ShooterSubsystem extends SubsystemBase{
     
   }
 
+  // public void shooter(){
+  //   m_Shooter.set();
+  // }
+
   public void multiple_run(double speed){
     m_Vector.set(-speed/4);
     m_Conveyor.set(-speed/4);
 
   }
 
+  public void shoot(){
+    double shooterSpeed = calculateShooterSpeed(1.5);
+    m_elevatorPID.setSetpoint(shooterSpeed, ControlType.kVelocity);
+  }
+
+  public void stop(){
+    // double shooterSpeed = calculateShooterSpeed(1.5);
+    m_elevatorPID.setSetpoint(0, ControlType.kVelocity);
+  }
+
   public double calculateShooterSpeed(double distance) {
     // Calculate the required initial velocity using projectile motion equations
-    double velocity = distance * Math.sqrt(GRAVITY/2) * (-HOPPERHEIGHT + SHOOTERHEIGHT + (distance / Math.tan(SHOOTERANGLE)));
+    velocity = distance * 2.214;
+    velocity *= (-HOPPERHEIGHT + SHOOTERHEIGHT + (distance / Math.tan(SHOOTERANGLE)));
     velocity = velocity / Math.sin(SHOOTERANGLE);
+    velocity = Math.sin(SHOOTERANGLE);
     // double torque = (TORQUESLOPE * velocity) + TORQUEOFFSET;
     double rpm = (((((velocity * BALLMASS) / TIMECONSTANT) + BALLWEIGHT) * WHEELRADIUS) - TORQUEOFFSET) / TORQUESLOPE;
     return rpm;

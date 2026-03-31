@@ -118,13 +118,18 @@ public class RobotContainer {
              m_Intake)).onFalse(new RunCommand(() -> m_Intake.spinrun(0.0),
              m_Intake));
 
-        new JoystickButton(m_shooterController, XboxController.Button.kLeftBumper.value)
-            .whileTrue(new RunCommand(() -> m_Intake.spinrun(-1),
-             m_Intake)).onFalse(new RunCommand(() -> m_Intake.spinrun(0.0),
+        // new JoystickButton(m_shooterController, XboxController.Button.kLeftBumper.value)
+        //     .whileTrue(new RunCommand(() -> m_Intake.spinrun(-1),
+        //      m_Intake)).onFalse(new RunCommand(() -> m_Intake.spinrun(0.0),
+        //      m_Intake));
+
+                     new JoystickButton(m_shooterController, XboxController.Button.kLeftBumper.value)
+            .whileTrue(new RunCommand(() -> m_shooter.shoot(),
+             m_Intake)).onFalse(new RunCommand(() -> m_shooter.stop(),
              m_Intake));
         
         new JoystickButton(m_shooterController, XboxController.Button.kY.value)
-            .whileTrue(new RunCommand(() -> Tierslop(1),
+            .whileTrue(new RunCommand(() -> Tierslop(-1),
              m_Intake)).onFalse(new RunCommand(() -> Tierslop(0.0),
              m_Intake));
 
@@ -141,6 +146,11 @@ public class RobotContainer {
     m_Intake.spinrun(speed);
     m_shooter.conveyorrun(speed);
     m_shooter.vectorrun(speed);
+    m_Intake.controlrun(speed);
+  }
+
+  public void robotcontainerperiodic(){
+    // m_shooter.periodic();
   }
 
   /**
