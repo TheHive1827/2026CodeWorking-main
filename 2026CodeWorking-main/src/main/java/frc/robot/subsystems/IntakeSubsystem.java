@@ -64,30 +64,4 @@ public class IntakeSubsystem extends SubsystemBase{
       public void spinrun(double speed){
     IntakeSpin.set(-speed/5);
   }
-
-
-  // public void RunAll(double speed){
-  //   IntakeSpin.set(-speed/5);
-  //   m_shooter.m_Conveyor.set(speed/5);
-  //   m_shooter.m_Vector.set(speed/5);
-  //   m_shooter.m_Shooter.set(speed/5);
-  // }
-  //   public void Intake(boolean forward, boolean back){
-  //   public void Intake(int speed){
-  //       speed = 0;
-  //       if (forward == true){
-  //           speed++;
-  //       }
-  //       if (back == true){
-  //           speed--;
-  //       }
-  //       m_IntakeMotor.set(MaxSpeed*speed);
-  //   }
-
-  //   public void Intake2(int speed){
-  //       m_IntakeMotor2.set(MaxSpeed*speed);
-  //   }
-
-    // public void IntakeControl
-    // IDK WHAT THE POINT OF THIS IS BUT ILL GUESS WE'LL SEE
 }
