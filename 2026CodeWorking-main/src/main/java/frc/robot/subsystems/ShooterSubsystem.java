@@ -45,12 +45,12 @@ public class ShooterSubsystem extends SubsystemBase{
     private final double TIMECONSTANT = 0.1;
     private final double BALLWEIGHT = BALLMASS * GRAVITY;
     private double velocity = 0;
-    public SparkClosedLoopController m_elevatorPID = m_Shooter.getClosedLoopController();
+    public SparkClosedLoopController m_ShooterPID = m_Shooter.getClosedLoopController();
   RelativeEncoder encoder;
   public static final SparkMaxConfig motorConfig = new SparkMaxConfig();
 
   public void config() {
-    m_elevatorPID = m_Shooter.getClosedLoopController();
+    m_ShooterPID = m_Shooter.getClosedLoopController();
 
     motorConfig.closedLoop
         .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
@@ -76,9 +76,9 @@ public class ShooterSubsystem extends SubsystemBase{
     shooterDistance = SmartDashboard.getNumber("Shooter Distance", 0);
     // double shooterSpeed = calculateShooterSpeed(1.5);
     // m_elevatorPID.setSetpoint(shooterSpeed, ControlType.kVelocity);
-    SmartDashboard.putNumber("Shooter Speed", m_elevatorPID.getSetpoint());
-    SmartDashboard.putNumber("Shooter Distance", shooterDistance);
-    SmartDashboard.putString("Shooter PID Controller", m_elevatorPID.toString());
+    // SmartDashboard.putNumber("Shooter Speed", m_ShooterPID.getSetpoint());
+    // SmartDashboard.putNumber("Shooter Distance", shooterDistance);
+    // SmartDashboard.putString("Shooter PID Controller", m_ShooterPID.toString());
   }
 
   public void conveyorrun(double speed){
@@ -102,13 +102,16 @@ public class ShooterSubsystem extends SubsystemBase{
   }
 
   public void shoot(){
-    double shooterSpeed = calculateShooterSpeed(1.5);
-    m_elevatorPID.setSetpoint(shooterSpeed, ControlType.kVelocity);
+    // m_Shooter.setVoltage(12);
+    double shooterSpeed = calculateShooterSpeed(5);
+    m_ShooterPID.setSetpoint(shooterSpeed, ControlType.kVelocity);
   }
 
   public void stop(){
     // double shooterSpeed = calculateShooterSpeed(1.5);
-    m_elevatorPID.setSetpoint(0, ControlType.kVelocity);
+  //  m_Shooter.setVoltage(0);
+   m_Shooter.disable();
+    // m_elevatorPID.setSetpoint(0, ControlType.kVelocity);
   }
 
   public double calculateShooterSpeed(double distance) {

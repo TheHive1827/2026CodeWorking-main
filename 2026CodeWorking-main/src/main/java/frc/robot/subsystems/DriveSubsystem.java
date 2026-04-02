@@ -81,8 +81,8 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearRight.getPosition()
         });
 
-    SmartDashboard.putString("robot rotation", getPose().getRotation().toString());
-    SmartDashboard.putNumber("Robot Heading", getHeading());
+    // SmartDashboard.putString("robot rotation", getPose().getRotation().toString());
+    // SmartDashboard.putNumber("Robot Heading", getHeading());
   }
 
   /**

@@ -30,6 +30,7 @@ import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.OIConstants;
 
 public class IntakeSubsystem extends SubsystemBase{
+  double PositionGoal = 0;
   // XboxController m_shooterController = new XboxController(OIConstants.kShooterControllerPort);
   // private ShooterSubsystem m_shooter = new ShooterSubsystem();
     // private final SparkMax m_IntakeMotor = new SparkMax(IntakeConstants.IntakeCanID, MotorType.kBrushless);
@@ -45,10 +46,18 @@ public class IntakeSubsystem extends SubsystemBase{
       SmartDashboard.putString("Kendall-O-Meter: ", "yes");
       SmartDashboard.putNumber("Intake Control Speed: ", IntakeControl.get());
       SmartDashboard.putNumber("Intake Spin Speed: ", IntakeSpin.get());
+      if (PositionGoal > IntakeConstants.ControlMin){
+        PositionGoal = IntakeConstants.ControlMin;
+      } else if (PositionGoal < IntakeConstants.ControlMax)
+  {
+    PositionGoal = IntakeConstants.ControlMax;
+  }
+      ControlEncoder.setPosition(PositionGoal);
     }
 
     public void InitEncoder(){
-      ControlEncoder.setPosition(0.0);
+      ControlEncoder.setPosition(0);
+      PositionGoal = 0;
     }
 
 
@@ -58,7 +67,7 @@ public class IntakeSubsystem extends SubsystemBase{
 
 
     public void controlrun(double speed){
-    IntakeControl.set(speed/5);
+    PositionGoal = PositionGoal + speed;
   }
 
       public void spinrun(double speed){

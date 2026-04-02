@@ -19,7 +19,8 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
+// import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.IntakePIDSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -37,7 +38,7 @@ import java.util.List;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-  private final IntakeSubsystem m_Intake = new IntakeSubsystem();
+  private final IntakePIDSubsystem m_Intake = new IntakePIDSubsystem();
   private final ShooterSubsystem m_shooter = new ShooterSubsystem();
 //   m_Intake.InitEncoder();
 
@@ -53,7 +54,8 @@ public class RobotContainer {
    */
   public RobotContainer() {     
     // Configure the button bindings
-    m_Intake.InitEncoder();
+    m_Intake.Init();
+    m_Intake.config();
     m_shooter.config();
     configureButtonBindings();
 
@@ -104,14 +106,18 @@ public class RobotContainer {
             () -> m_robotDrive.zeroHeading(),
             m_robotDrive));
             
-        new JoystickButton(m_shooterController, XboxController.Button.kX.value)
+        new JoystickButton(m_shooterController, XboxController.Button.kA.value)
             .whileTrue(new RunCommand(() -> m_shooter.conveyorrun(XboxController.Button.kA.value),
              m_shooter)).onFalse(new RunCommand(() -> m_shooter.conveyorrun(0.0),
              m_shooter));
 
         
         new JoystickButton(m_shooterController, XboxController.Button.kB.value)
-            .whileTrue(new RunCommand(() -> m_Intake.controlrun(0.1),
+            .whileTrue(new RunCommand(() -> m_Intake.controlrun(-0.3),
+             m_Intake)).onFalse(new RunCommand(() -> m_Intake.controlrun(0), m_Intake));
+
+                     new JoystickButton(m_shooterController, XboxController.Button.kX.value)
+            .whileTrue(new RunCommand(() -> m_Intake.controlrun(0.3),
              m_Intake)).onFalse(new RunCommand(() -> m_Intake.controlrun(0), m_Intake));
 
         new JoystickButton(m_shooterController, XboxController.Button.kRightBumper.value)
@@ -130,27 +136,28 @@ public class RobotContainer {
              m_Intake));
         
         new JoystickButton(m_shooterController, XboxController.Button.kY.value)
-            .whileTrue(new RunCommand(() -> runAll(-1),
-             m_Intake)).onFalse(new RunCommand(() -> runAll(0.0),
+            .whileTrue(new RunCommand(() -> runShooter(-1),
+             m_Intake)).onFalse(new RunCommand(() -> runShooter(0.0),
              m_Intake));
 
         new JoystickButton(m_shooterController, XboxController.Button.kA.value)
-            .whileTrue(new RunCommand(() -> runAll(1),
-             m_Intake)).onFalse(new RunCommand(() -> runAll(0.0),
+            .whileTrue(new RunCommand(() -> runShooter(1),
+             m_Intake)).onFalse(new RunCommand(() -> runShooter(0.0),
              m_Intake));
 
  
   }
 
 
-  public void runAll(double speed){
-    m_Intake.spinrun(speed);
-    m_shooter.conveyorrun(speed);
+  public void runShooter(double speed){
+    // m_Intake.spinrun(speed);
+    // m_shooter.conveyorrun(speed);
     m_shooter.vectorrun(speed);
     // m_Intake.controlrun(speed);
   }
 
   public void robotcontainerperiodic(){
+    m_Intake.periodic();
     // m_shooter.periodic();
   }
 
