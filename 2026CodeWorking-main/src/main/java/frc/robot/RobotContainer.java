@@ -16,6 +16,7 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
@@ -61,6 +62,10 @@ public class RobotContainer {
     // m_Intake.config();
     m_shooter.config();
     configureButtonBindings();
+    SmartDashboard.putNumber("P", 0);
+    SmartDashboard.putNumber("I", 0);
+    SmartDashboard.putNumber("D", 0);
+    SmartDashboard.putNumber("Distance", 0);
 
     // Configure default commands`
     m_robotDrive.setDefaultCommand(
@@ -91,6 +96,10 @@ public class RobotContainer {
                 // it'll definitely need a ton of updates when the robot is actually finished.
   }
 
+  private void cameraShoot(){
+    m_shooter.rpmShoot(m_Photon.PhotonDistance);
+  }
+
   /**
    * Use this method to define your button->command mappings. Buttons can be
    * created by
@@ -118,23 +127,28 @@ public class RobotContainer {
              m_shooter));
 
         
-        new JoystickButton(m_shooterController, XboxController.Button.kY.value)
-            .whileTrue(new RunCommand(() -> m_Intake.controlrun(-0.3),
-             m_Intake)).onFalse(new RunCommand(() -> m_Intake.controlrun(0), m_Intake));
-
-                     new JoystickButton(m_shooterController, XboxController.Button.kX.value)
-            .whileTrue(new RunCommand(() -> m_Intake.controlrun(0.3),
-             m_Intake)).onFalse(new RunCommand(() -> m_Intake.controlrun(0), m_Intake));
-
-        new JoystickButton(m_shooterController, XboxController.Button.kLeftBumper.value)
-            .whileTrue(new RunCommand(() -> m_Intake.spinrun(1),
-             m_Intake)).onFalse(new RunCommand(() -> m_Intake.spinrun(0.0),
+             
+             new JoystickButton(m_shooterController, XboxController.Button.kRightBumper.value)
+             .whileTrue(new RunCommand(() -> cameraShoot(),
+             m_Intake)).onFalse(new RunCommand(() -> runShooter(0),
              m_Intake));
-
-        new JoystickButton(m_shooterController, XboxController.Button.kRightBumper.value)
-            .whileTrue(new RunCommand(() -> runShooter(1),
-             m_Intake)).onFalse(new RunCommand(() -> runShooter(0.0),
-             m_Intake));
+             /**
+             // new JoystickButton(m_shooterController, XboxController.Button.kY.value)
+             //     .whileTrue(new RunCommand(() -> m_Intake.controlrun(-0.3),
+             //      m_Intake)).onFalse(new RunCommand(() -> m_Intake.controlrun(0), m_Intake));
+     
+             //              new JoystickButton(m_shooterController, XboxController.Button.kX.value)
+             //     .whileTrue(new RunCommand(() -> m_Intake.controlrun(0.3),
+             //      m_Intake)).onFalse(new RunCommand(() -> m_Intake.controlrun(0), m_Intake));
+     
+             // new JoystickButton(m_shooterController, XboxController.Button.kLeftBumper.value)
+             //     .whileTrue(new RunCommand(() -> m_Intake.spinrun(1),
+             //      m_Intake)).onFalse(new RunCommand(() -> m_Intake.spinrun(0.0),
+             //      m_Intake));
+        // new JoystickButton(m_shooterController, XboxController.Button.kLeftBumper.value)
+        //     .whileTrue(new RunCommand(() -> m_shooter.calculate(),
+        //      m_Intake)).onFalse(new RunCommand(() -> runShooter(0.0),
+        //      m_Intake));**/
           
         m_shooter.setDefaultCommand(
         new RunCommand(
@@ -142,8 +156,6 @@ public class RobotContainer {
               m_shooterController.getLeftY()),
             m_shooter)
         );
-
-
         // new JoystickButton(m_shooterController, XboxController.Button.kLeftBumper.value)
         //     .whileTrue(new RunCommand(() -> m_Intake.spinrun(-1),
         //      m_Intake)).onFalse(new RunCommand(() -> m_Intake.spinrun(0.0),

@@ -22,8 +22,8 @@ import com.revrobotics.ResetMode;
 import frc.robot.Configs;
 
 public class MAXSwerveModule {
-  private final SparkFlex m_drivingSpark;
-  private final SparkMax m_turningSpark;
+  public final SparkFlex m_drivingSpark;
+  public final SparkMax m_turningSpark;
 
   private final RelativeEncoder m_drivingEncoder;
   private final AbsoluteEncoder m_turningEncoder;

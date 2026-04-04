@@ -74,8 +74,9 @@ public final class Constants {
   public static final class PhotonConstants{
     public static final double examplevariable = 0;
     public static final double AprilTag16Height = 3;
-    public static final double ArenaTagHeight = 44.25; // inches
-    public static final double CameraHeight = 16; // inches, again.
+    public static final double ArenaTagHeight = 1.12395; // 44.25inches
+    public static final double CameraHeight = 0.4064; // 16 inches, again.
+    public static final double CameraAprilHeight = ArenaTagHeight - CameraHeight;
   }
 
   public static final class ApriltagConstants{

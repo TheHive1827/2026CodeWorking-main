@@ -37,14 +37,15 @@ public class ShooterSubsystem extends SubsystemBase{
     private final double SHOOTERHEIGHT = 0.45;
     private final double HOPPERHEIGHT = 3;
     public double shooterDistance = 5;
-    private final double SHOOTERANGLE = Math.toRadians(75);
+    private final double SHOOTERANGLE = Math.toRadians(62);
     private final double BALLMASS = 0.4;
-    private final double TORQUESLOPE = -2.55 / 5676;
-    private final double TORQUEOFFSET = 2.6;
+    private final double TORQUESLOPE = -3.65 / 6704;
+    private final double TORQUEOFFSET = 3.65;
     private final double CONTACTLENGTH = 0.3;
     private final double TIMECONSTANT = 0.1;
     private final double BALLWEIGHT = BALLMASS * GRAVITY;
     private double velocity = 0;
+    private final float minDistance = 4;
     public SparkClosedLoopController m_ShooterPID = m_Shooter.getClosedLoopController();
   RelativeEncoder encoder;
   public static final SparkMaxConfig motorConfig = new SparkMaxConfig();
@@ -68,13 +69,17 @@ public class ShooterSubsystem extends SubsystemBase{
 
     m_Shooter.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
     // we'll need to add FeedForward later
+    //okay
 
-// can't wait to watch jjk season 3 fr    
   }
     
   public void periodic(){
     shooterDistance = SmartDashboard.getNumber("Shooter Distance", 0);
     SmartDashboard.putNumber("shooter rpm", m_Shooter.getEncoder().getVelocity());
+    motorConfig.closedLoop.p(SmartDashboard.getNumber("P", 1.5));
+    motorConfig.closedLoop.i(SmartDashboard.getNumber("I", 0));
+    motorConfig.closedLoop.d(SmartDashboard.getNumber("D", 0));
+
     // double shooterSpeed = calculateShooterSpeed(1.5);
     // m_elevatorPID.setSetpoint(shooterSpeed, ControlType.kVelocity);
     // SmartDashboard.putNumber("Shooter Speed", m_ShooterPID.getSetpoint());
@@ -116,13 +121,23 @@ public class ShooterSubsystem extends SubsystemBase{
     // m_elevatorPID.setSetpoint(0, ControlType.kVelocity);
   }
 
-  public double calculateShooterSpeed(double distance) {
+  public void rpmShoot(double distance){
+    if (distance < minDistance) distance = 0;
+    int rpm = calculateShooterSpeed(distance);
+    m_ShooterPID.setSetpoint(rpm,ControlType.kVelocity);
+    SmartDashboard.putNumber("Rpm: ", rpm);
+  }
+
+  public int calculateShooterSpeed(double distance) {
     // Calculate the required initial velocity using projectile motion equations
     velocity = distance * 2.214;
     velocity *= (-HOPPERHEIGHT + SHOOTERHEIGHT + (distance / Math.tan(SHOOTERANGLE)));
     velocity = velocity / Math.sin(SHOOTERANGLE);
-    velocity = Math.sin(SHOOTERANGLE);
+    // velocity = Math.sin(SHOOTERANGLE);
     // double torque = (TORQUESLOPE * velocity) + TORQUEOFFSET;
     double rpm = (((((velocity * BALLMASS) / TIMECONSTANT) + BALLWEIGHT) * WHEELRADIUS) - TORQUEOFFSET) / TORQUESLOPE;
-    return rpm;}
+    if (velocity == 0){
+      rpm = 0;
+    }
+    return (int)rpm;}
 }

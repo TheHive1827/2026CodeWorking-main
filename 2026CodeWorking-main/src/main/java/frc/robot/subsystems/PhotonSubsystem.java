@@ -40,6 +40,7 @@ public class PhotonSubsystem extends SubsystemBase {
     PhotonCamera camera = new PhotonCamera("photonvision");
     
     // private final PhotonCamera photonCamera;
+    boolean See;
     PhotonTrackedTarget target;
     double DistanceX = 1;
     double IDS[];
@@ -52,7 +53,7 @@ public class PhotonSubsystem extends SubsystemBase {
     double targetPitch = 0.0;
     double TargetHeight = 0.0;
     // var camToTarget = target.getBestCameraToTarget();
-     double PhotonDistance = 0.0; 
+    public double PhotonDistance = 0.0; 
     double targetX;
     double TargetID;
     int x = 0;
@@ -76,23 +77,23 @@ public class PhotonSubsystem extends SubsystemBase {
 // }
 
     public void photonPeriodic(){
+        
         read();
     }
 
     public void read(){
-        x = 0;
         var results = camera.getAllUnreadResults();
+        PhotonDistance = SmartDashboard.getNumber("Distance: ", 0);
         if (!results.isEmpty()) {
             // Camera processed a new frame since last
             // Get the last one in the list.
             // targetX;
             var result = results.get(results.size() - 1);
-            // if (result.hasTargets()) {
+            if (result.hasTargets()) {
                 // At least one AprilTag was seen by the camera
-                for (var target : result.getTargets()) { 
+                for (PhotonTrackedTarget target : result.getTargets()) { 
                     SmartDashboard.putNumber("Target ID: ", target.getFiducialId());
-                    if (target.getFiducialId() == 16) {
-                        x++;
+                    if (target.getFiducialId() >= 0) {
                         // If Tag 16, this happens.
                         targetYaw = target.getYaw();
                         targetPitch = target.getPitch();
@@ -100,11 +101,11 @@ public class PhotonSubsystem extends SubsystemBase {
                         targetVisible = true;
                         TargetID = target.getFiducialId();
                         // targetPitch()
+
                         SmartDashboard.putNumber("yaw", targetYaw);
                         SmartDashboard.putNumber("pitch", targetPitch);
-
-                        
-                        
+                        PhotonDistance = (PhotonConstants.CameraAprilHeight*Math.sin(targetPitch))/(Math.sin(90-targetPitch)); 
+                        SmartDashboard.putNumber("Distance to tag: ", PhotonDistance);                       
                         // angleT = 90.0 - targetPitch.toDegrees();
                         // 3.19.2026, I probably lost my headphones                       // HypotenuseSquared = (target.getBestCameraToTarget().getX() * target.getBestCameraToTarget().getX() + target.getBestCameraToTarget().getY() * target.getBestCameraToTarget().getY());
                         // PhotonDistance = (Math.sqrt((target.getBestCameraToTarget().getX() * target.getBestCameraToTarget().getX() + target.getBestCameraToTarget().getY() * target.getBestCameraToTarget().getY())));
@@ -112,18 +113,18 @@ public class PhotonSubsystem extends SubsystemBase {
 
                     }
                 } else{
-                    PhotonDistance = 0.0;
+                    // PhotonDistance = 0.0;
                     targetVisible = false;
                     targetYaw = 0.0;
                     targetPitch = 0.0;
                     TargetHeight = 0.0;
-                    PhotonDistance = 0.0; 
+                    // PhotonDistance = 0.0; 
                     TargetID = 0;
                 }
             }
             
     }
-// }
+}
 
 // R.I.P. Limelight 3 = 3-25-2026.
-// nvm we resurrected you gng
+// nvm we resurrected you gng   
