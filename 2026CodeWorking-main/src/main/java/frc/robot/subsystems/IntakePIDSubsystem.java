@@ -46,7 +46,7 @@ public class IntakePIDSubsystem extends SubsystemBase{
     private final SparkMax IntakeControl = new SparkMax(IntakeConstants.IntakeControlCanID, MotorType.kBrushless);
     private final SparkMax IntakeSpin = new SparkMax(IntakeConstants.IntakeSpinCanID, MotorType.kBrushless);
     private final RelativeEncoder ControlEncoder = IntakeControl.getEncoder();
-    double MaxSpeed = 0.25;
+    double MaxSpeed = 0.50;
     public static final SparkMaxConfig motorConfig = new SparkMaxConfig();
     public SparkClosedLoopController IntakeControlPID = IntakeControl.getClosedLoopController();
     double PositionGoal;
@@ -56,7 +56,7 @@ public class IntakePIDSubsystem extends SubsystemBase{
       // SmartDashboard.putNumber("Intake Control Speed: ", IntakeControl.get());
       // SmartDashboard.putNumber("Intake Spin Speed: ", IntakeSpin.get());
       // SmartDashboard.putNumber("Intake Spin Speed: ", IntakeSpin.get());
-        IntakeControlPID.setSetpoint(PositionGoal, ControlType.kPosition);
+        // IntakeControlPID.setSetpoint(PositionGoal, ControlType.kPosition);
       }
 
     public void Init(){
@@ -88,7 +88,7 @@ public class IntakePIDSubsystem extends SubsystemBase{
         .d(0.0)
         // kinda like friction
         .iZone(0)
-        .outputRange(-0.75, 0.5);
+        .outputRange(-0.8, 0.5);
             // m_Shooter.setP(1);
 
     IntakeControl.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
@@ -106,7 +106,10 @@ public class IntakePIDSubsystem extends SubsystemBase{
   } else{
     PositionGoal = PositionGoal + speed;
   }
-
+IntakeControlPID.setSetpoint(PositionGoal, ControlType.kPosition);
+SmartDashboard.putNumber("intake position", 11);
+IntakeControl.set(speed);
+// SmartDashboard
 }
 
     public void spinrun(double speed){

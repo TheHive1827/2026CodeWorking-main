@@ -36,7 +36,7 @@ public class ShooterSubsystem extends SubsystemBase{
     private final double GRAVITY = -9.81;
     private final double SHOOTERHEIGHT = 0.45;
     private final double HOPPERHEIGHT = 3;
-    public double shooterDistance = 1.5;
+    public double shooterDistance = 5;
     private final double SHOOTERANGLE = Math.toRadians(75);
     private final double BALLMASS = 0.4;
     private final double TORQUESLOPE = -2.55 / 5676;
@@ -74,6 +74,7 @@ public class ShooterSubsystem extends SubsystemBase{
     
   public void periodic(){
     shooterDistance = SmartDashboard.getNumber("Shooter Distance", 0);
+    SmartDashboard.putNumber("shooter rpm", m_Shooter.getEncoder().getVelocity());
     // double shooterSpeed = calculateShooterSpeed(1.5);
     // m_elevatorPID.setSetpoint(shooterSpeed, ControlType.kVelocity);
     // SmartDashboard.putNumber("Shooter Speed", m_ShooterPID.getSetpoint());
@@ -82,7 +83,7 @@ public class ShooterSubsystem extends SubsystemBase{
   }
 
   public void conveyorrun(double speed){
-    m_Conveyor.set(-speed/4);
+    m_Conveyor.set(-speed);
     
   }
 
@@ -101,10 +102,11 @@ public class ShooterSubsystem extends SubsystemBase{
 
   }
 
-  public void shoot(){
+  public void shoot(double speed){
     // m_Shooter.setVoltage(12);
-    double shooterSpeed = calculateShooterSpeed(5);
-    m_ShooterPID.setSetpoint(shooterSpeed, ControlType.kVelocity);
+    // double shooterSpeed = calculateShooterSpeed(5);
+    // m_ShooterPID.setSetpoint(shooterSpeed, ControlType.kVelocity);
+    m_Shooter.set(speed);
   }
 
   public void stop(){
@@ -122,6 +124,5 @@ public class ShooterSubsystem extends SubsystemBase{
     velocity = Math.sin(SHOOTERANGLE);
     // double torque = (TORQUESLOPE * velocity) + TORQUEOFFSET;
     double rpm = (((((velocity * BALLMASS) / TIMECONSTANT) + BALLWEIGHT) * WHEELRADIUS) - TORQUEOFFSET) / TORQUESLOPE;
-    return rpm;
-  }
+    return rpm;}
 }

@@ -13,14 +13,16 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
-// import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.IntakePIDSubsystem;
+import frc.robot.subsystems.PhotonSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -37,9 +39,10 @@ import java.util.List;
  */
 public class RobotContainer {
   // The robot's subsystems
-  private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-  private final IntakePIDSubsystem m_Intake = new IntakePIDSubsystem();
-  private final ShooterSubsystem m_shooter = new ShooterSubsystem();
+  private DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private IntakeSubsystem m_Intake = new IntakeSubsystem();
+  private ShooterSubsystem m_shooter = new ShooterSubsystem();
+  private PhotonSubsystem m_Photon = new PhotonSubsystem();
 //   m_Intake.InitEncoder();
 
 
@@ -54,12 +57,12 @@ public class RobotContainer {
    */
   public RobotContainer() {     
     // Configure the button bindings
-    m_Intake.Init();
-    m_Intake.config();
+    // m_Intake.Init();
+    // m_Intake.config();
     m_shooter.config();
     configureButtonBindings();
 
-    // Configure default commands
+    // Configure default commands`
     m_robotDrive.setDefaultCommand(
         
         // The left stick controls translation of the robot.
@@ -71,7 +74,9 @@ public class RobotContainer {
                 -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
                 true),
             m_robotDrive));
-
+            m_Photon.setDefaultCommand(
+              new RunCommand( () -> m_Photon.photonPeriodic(), m_Photon)
+            );
             
             
 
@@ -96,6 +101,7 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
+    //Drive binds
     new JoystickButton(m_driverController, XboxController.Button.kX.value)
         .whileTrue(new RunCommand(
             () -> m_robotDrive.setX(),
@@ -105,14 +111,14 @@ public class RobotContainer {
         .onTrue(new InstantCommand(
             () -> m_robotDrive.zeroHeading(),
             m_robotDrive));
-            
+    // Shooter binds
         new JoystickButton(m_shooterController, XboxController.Button.kA.value)
             .whileTrue(new RunCommand(() -> m_shooter.conveyorrun(XboxController.Button.kA.value),
              m_shooter)).onFalse(new RunCommand(() -> m_shooter.conveyorrun(0.0),
              m_shooter));
 
         
-        new JoystickButton(m_shooterController, XboxController.Button.kB.value)
+        new JoystickButton(m_shooterController, XboxController.Button.kY.value)
             .whileTrue(new RunCommand(() -> m_Intake.controlrun(-0.3),
              m_Intake)).onFalse(new RunCommand(() -> m_Intake.controlrun(0), m_Intake));
 
@@ -120,30 +126,39 @@ public class RobotContainer {
             .whileTrue(new RunCommand(() -> m_Intake.controlrun(0.3),
              m_Intake)).onFalse(new RunCommand(() -> m_Intake.controlrun(0), m_Intake));
 
-        new JoystickButton(m_shooterController, XboxController.Button.kRightBumper.value)
+        new JoystickButton(m_shooterController, XboxController.Button.kLeftBumper.value)
             .whileTrue(new RunCommand(() -> m_Intake.spinrun(1),
              m_Intake)).onFalse(new RunCommand(() -> m_Intake.spinrun(0.0),
              m_Intake));
+
+        new JoystickButton(m_shooterController, XboxController.Button.kRightBumper.value)
+            .whileTrue(new RunCommand(() -> runShooter(1),
+             m_Intake)).onFalse(new RunCommand(() -> runShooter(0.0),
+             m_Intake));
+          
+        m_shooter.setDefaultCommand(
+        new RunCommand(
+            () -> runShooter(
+              m_shooterController.getLeftY()),
+            m_shooter)
+        );
+
 
         // new JoystickButton(m_shooterController, XboxController.Button.kLeftBumper.value)
         //     .whileTrue(new RunCommand(() -> m_Intake.spinrun(-1),
         //      m_Intake)).onFalse(new RunCommand(() -> m_Intake.spinrun(0.0),
         //      m_Intake));
 
-                     new JoystickButton(m_shooterController, XboxController.Button.kLeftBumper.value)
-            .whileTrue(new RunCommand(() -> m_shooter.shoot(),
-             m_Intake)).onFalse(new RunCommand(() -> m_shooter.stop(),
-             m_Intake));
-        
-        new JoystickButton(m_shooterController, XboxController.Button.kY.value)
-            .whileTrue(new RunCommand(() -> runShooter(-1),
-             m_Intake)).onFalse(new RunCommand(() -> runShooter(0.0),
-             m_Intake));
+          // new JoystickButton(m_shooterController, XboxController.Button.kA.value)
+          //   .whileTrue(new RunCommand(() -> m_shooter.shoot(),
+          //    m_Intake)).onFalse(new RunCommand(() -> m_shooter.stop(),
+          //    m_Intake));
 
-        new JoystickButton(m_shooterController, XboxController.Button.kA.value)
-            .whileTrue(new RunCommand(() -> runShooter(1),
-             m_Intake)).onFalse(new RunCommand(() -> runShooter(0.0),
-             m_Intake));
+        
+        // new JoystickButton(m_shooterController, XboxController.Button.kY.value)
+        //     .whileTrue(new RunCommand(() -> runShooter(-1),
+        //      m_Intake)).onFalse(new RunCommand(() -> runShooter(0.0),
+        //      m_Intake));
 
  
   }
@@ -151,14 +166,16 @@ public class RobotContainer {
 
   public void runShooter(double speed){
     // m_Intake.spinrun(speed);
-    // m_shooter.conveyorrun(speed);
+    m_shooter.conveyorrun(speed);
     m_shooter.vectorrun(speed);
+    m_shooter.shoot(speed);
     // m_Intake.controlrun(speed);
   }
 
   public void robotcontainerperiodic(){
     m_Intake.periodic();
-    // m_shooter.periodic();
+    // m_Photon.photonPeriodic();
+    m_shooter.periodic();
   }
 
   /**
@@ -203,8 +220,8 @@ public class RobotContainer {
     // Reset odometry to the starting pose of the trajectory.
     m_robotDrive.resetOdometry(exampleTrajectory.getInitialPose());
 
-
+    return null;
     // Run path following command, then stop at the end.
-    return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false));
+    // return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false));
   }
 }

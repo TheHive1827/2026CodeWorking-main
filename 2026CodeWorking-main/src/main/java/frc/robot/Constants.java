@@ -66,7 +66,7 @@ public final class Constants {
 
   public static final class IntakeConstants{
     public static final int IntakeControlCanID = 7;
-    public static final double ControlMax = -6;
+    public static final double ControlMax = -10.071426;
     public static final double ControlMin = 0;
     public static final int IntakeSpinCanID =  8;
   }
@@ -75,7 +75,7 @@ public final class Constants {
     public static final double examplevariable = 0;
     public static final double AprilTag16Height = 3;
     public static final double ArenaTagHeight = 44.25; // inches
-    public static final double CameraHeight = 24; // inches, again.
+    public static final double CameraHeight = 16; // inches, again.
   }
 
   public static final class ApriltagConstants{

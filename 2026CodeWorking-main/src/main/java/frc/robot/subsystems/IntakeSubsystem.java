@@ -43,12 +43,9 @@ public class IntakeSubsystem extends SubsystemBase{
 
     public void periodic(){
       SmartDashboard.putNumber("Control Encoder Position: ", ControlEncoder.getPosition());
-      SmartDashboard.putString("Kendall-O-Meter: ", "yes");
+    //   SmartDashboard.putString("Kendall-O-Meter: ", "yes");
       SmartDashboard.putNumber("Intake Control Speed: ", IntakeControl.get());
       SmartDashboard.putNumber("Intake Spin Speed: ", IntakeSpin.get());
-      if (PositionGoal > IntakeConstants.ControlMin){
-        PositionGoal = IntakeConstants.ControlMin;
-      } else if (PositionGoal < IntakeConstants.ControlMax)
   {
     PositionGoal = IntakeConstants.ControlMax;
   }
@@ -67,10 +64,10 @@ public class IntakeSubsystem extends SubsystemBase{
 
 
     public void controlrun(double speed){
-    PositionGoal = PositionGoal + speed;
+    IntakeControl.set(speed);
   }
 
       public void spinrun(double speed){
-    IntakeSpin.set(-speed/5);
+    IntakeSpin.set(-speed);
   }
 }
