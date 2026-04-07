@@ -1,0 +1,107 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 4.0,
+        "y": 0.5708765652951695
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.000000000000002,
+        "y": 0.5708765652951695
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.9130411449016105,
+        "y": 1.2685688729874767
+      },
+      "prevControl": {
+        "x": 8.020359152065625,
+        "y": 0.21327513587465496
+      },
+      "nextControl": {
+        "x": 7.815688729874777,
+        "y": 2.225867620751342
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.572307692307692,
+        "y": 6.947459749552772
+      },
+      "prevControl": {
+        "x": 8.665012857781752,
+        "y": 6.53066972271914
+      },
+      "nextControl": {
+        "x": 6.479602526833631,
+        "y": 7.364249776386404
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.029194991055456,
+        "y": 7.109713774597496
+      },
+      "prevControl": {
+        "x": 3.0616457960644,
+        "y": 7.904758497316638
+      },
+      "nextControl": {
+        "x": 2.9794627476104574,
+        "y": 5.891273810195018
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.5159570661896247,
+        "y": 4.010661896243291
+      },
+      "prevControl": {
+        "x": 2.5159570661896247,
+        "y": 4.010661896243291
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1,
+      "rotationDegrees": 91.84761026599466
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "reversed": false,
+  "folder": "Test-autos",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": true
+}
