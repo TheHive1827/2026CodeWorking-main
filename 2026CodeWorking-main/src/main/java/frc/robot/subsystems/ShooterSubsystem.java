@@ -36,7 +36,7 @@ public class ShooterSubsystem extends SubsystemBase{
     private final double GRAVITY = -9.81;
     private final double SHOOTERHEIGHT = 0.45;
     private final double HOPPERHEIGHT = 3;
-    public double shooterDistance = 5;
+      //  public double shooterDistance = 0;
     private final double SHOOTERANGLE = Math.toRadians(62);
     private final double BALLMASS = 0.4;
     private final double TORQUESLOPE = -3.65 / 6704;
@@ -45,23 +45,28 @@ public class ShooterSubsystem extends SubsystemBase{
     private final double TIMECONSTANT = 0.1;
     private final double BALLWEIGHT = BALLMASS * GRAVITY;
     private double velocity = 0;
+    public double shooterDistance = 0;
     private final float minDistance = 4;
     public SparkClosedLoopController m_ShooterPID = m_Shooter.getClosedLoopController();
   RelativeEncoder encoder;
   public static final SparkMaxConfig motorConfig = new SparkMaxConfig();
 
+  // public void periodics(){
+  //   public double shooterDistance = (SmartDashboard.getNumber("Distance types sh", 5));
+  // }
   public void config() {
+    // motorConfig.closedLoop.allowedClosedLoopError(1, 0);
     m_ShooterPID = m_Shooter.getClosedLoopController();
-
+    
     motorConfig.closedLoop
         .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
         // Set PID values for position control. We don't need to pass a closed loop
         // slot, as it will default to slot 0.
-        .p(1.5)
+        .p(2.54)
         // speed
-        .i(0.0)
+        .i(0.25)
         // integral
-        .d(0.0)
+        .d(1.82)
         // kinda like friction
         .iZone(0)
         .outputRange(-0.5, 0.5);
@@ -76,9 +81,10 @@ public class ShooterSubsystem extends SubsystemBase{
   public void periodic(){
     shooterDistance = SmartDashboard.getNumber("Shooter Distance", 0);
     SmartDashboard.putNumber("shooter rpm", m_Shooter.getEncoder().getVelocity());
-    motorConfig.closedLoop.p(SmartDashboard.getNumber("P", 1.5));
-    motorConfig.closedLoop.i(SmartDashboard.getNumber("I", 0));
-    motorConfig.closedLoop.d(SmartDashboard.getNumber("D", 0));
+    motorConfig.closedLoop.p(SmartDashboard.getNumber("P", 2.54));
+    motorConfig.closedLoop.i(SmartDashboard.getNumber("I", 0.25));
+    motorConfig.closedLoop.d(SmartDashboard.getNumber("D", 1.82));
+    // shooterDistance = (SmartDashboard.getNumber("Distance types sh", 5));
 
     // double shooterSpeed = calculateShooterSpeed(1.5);
     // m_elevatorPID.setSetpoint(shooterSpeed, ControlType.kVelocity);
@@ -122,6 +128,7 @@ public class ShooterSubsystem extends SubsystemBase{
   }
 
   public void rpmShoot(double distance){
+    // distance = shooterDistance;
     if (distance < minDistance) distance = 0;
     int rpm = calculateShooterSpeed(distance);
     m_ShooterPID.setSetpoint(rpm,ControlType.kVelocity);
