@@ -1,0 +1,167 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.4186046511627906,
+        "y": 4.026887298747764
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.996744186046511,
+        "y": 3.150715563506261
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.2076744186046513,
+        "y": 2.5990518783542043
+      },
+      "prevControl": {
+        "x": 2.958161273983928,
+        "y": 2.614646449893
+      },
+      "nextControl": {
+        "x": 3.467280858676207,
+        "y": 2.582826475849731
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.55608228980322,
+        "y": 2.3881216457960637
+      },
+      "prevControl": {
+        "x": 6.47509412802835,
+        "y": 1.951285867460156
+      },
+      "nextControl": {
+        "x": 8.637070451578094,
+        "y": 2.8249574241319713
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.669660107334526,
+        "y": 6.087513416815742
+      },
+      "prevControl": {
+        "x": 7.9354436382715035,
+        "y": 5.763950857414205
+      },
+      "nextControl": {
+        "x": 7.296475849731663,
+        "y": 6.5418246869409655
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.241824686940967,
+        "y": 6.493148479427549
+      },
+      "prevControl": {
+        "x": 7.393828264758498,
+        "y": 7.5964758497316645
+      },
+      "nextControl": {
+        "x": 5.0179942499065575,
+        "y": 5.321029187619945
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.0146690518783545,
+        "y": 4.724579606440071
+      },
+      "prevControl": {
+        "x": 6.279227067541994,
+        "y": 4.3828588362078715
+      },
+      "nextControl": {
+        "x": 5.625259391771019,
+        "y": 5.227567084078712
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.2076744186046513,
+        "y": 5.3573703041144904
+      },
+      "prevControl": {
+        "x": 3.338172463999604,
+        "y": 5.694366668379645
+      },
+      "nextControl": {
+        "x": 3.0771763732096984,
+        "y": 5.020373939849336
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.077871198568873,
+        "y": 4.026887298747764
+      },
+      "prevControl": {
+        "x": 2.901094503272236,
+        "y": 4.2036639940444
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.0,
+      "rotationDegrees": -18.434948822922035
+    },
+    {
+      "waypointRelativePos": 2,
+      "rotationDegrees": 77.19573393471313
+    },
+    {
+      "waypointRelativePos": 3,
+      "rotationDegrees": 118.07248693585277
+    },
+    {
+      "waypointRelativePos": 4,
+      "rotationDegrees": 0.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "reversed": false,
+  "folder": "Test-autos",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 5.1944289077347845
+  },
+  "useDefaultConstraints": true
+}
