@@ -26,6 +26,7 @@ import frc.robot.subsystems.IntakePIDSubsystem;
 import frc.robot.subsystems.PhotonSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
@@ -44,10 +45,7 @@ public class RobotContainer {
   private IntakeSubsystem m_Intake = new IntakeSubsystem();
   private ShooterSubsystem m_shooter = new ShooterSubsystem();
   private PhotonSubsystem m_Photon = new PhotonSubsystem();
-//   m_Intake.InitEncoder();
 
-
-//   private final 
 
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
@@ -57,17 +55,15 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {     
-    // Configure the button bindings
-    // m_Intake.Init();
-    // m_Intake.config();
     m_shooter.config();
     configureButtonBindings();
+    // Shooter PID constants
     SmartDashboard.putNumber("P", 0);
     SmartDashboard.putNumber("I", 0);
     SmartDashboard.putNumber("D", 0);
     SmartDashboard.putNumber("Distance", 0);
 
-    // Configure default commands`
+    // Configure default commands
     m_robotDrive.setDefaultCommand(
         
         // The left stick controls translation of the robot.
@@ -96,8 +92,13 @@ public class RobotContainer {
                 // it'll definitely need a ton of updates when the robot is actually finished.
   }
 
-  private void cameraShoot(){
-    m_shooter.rpmShoot(m_Photon.PhotonDistance);
+  private void cameraShoot(Boolean isRunning){
+    if (isRunning){
+      m_shooter.rpmShoot(m_Photon.PhotonDistance);
+    }
+    else {
+      m_shooter.rpmShoot(0);
+    }
   }
 
   /**
@@ -121,15 +122,19 @@ public class RobotContainer {
             () -> m_robotDrive.zeroHeading(),
             m_robotDrive));
     // Shooter binds
+    // Y = Push Out Intake Control.
+    // X = Pull In Intake Control.
+    // LB = Spin Intake Wheels
+    // RB = Runs Conveyor, Vector Wheels, And Shooter
         new JoystickButton(m_shooterController, XboxController.Button.kA.value)
             .whileTrue(new RunCommand(() -> m_shooter.shoot(0.6),
              m_shooter)).onFalse(new RunCommand(() -> m_shooter.shoot(0.0),
              m_shooter));
-             
-             new JoystickButton(m_shooterController, XboxController.Button.kRightBumper.value)
-             .whileTrue(new RunCommand(() -> runShooter(1),
-             m_Intake)).onFalse(new RunCommand(() -> runShooter(0),
-             m_Intake));
+
+        new JoystickButton(m_shooterController, XboxController.Button.kB.value)
+            .whileTrue(new RunCommand(() -> m_shooter.multiple_run(1),
+             m_shooter)).onFalse(new RunCommand(() -> m_shooter.multiple_run(0),
+             m_shooter));
 
              new JoystickButton(m_shooterController, XboxController.Button.kY.value)
                  .whileTrue(new RunCommand(() -> m_Intake.controlrun(-0.3),
@@ -144,16 +149,33 @@ public class RobotContainer {
                   m_Intake)).onFalse(new RunCommand(() -> m_Intake.spinrun(0.0),
                   m_Intake));
 
+        new JoystickButton(m_shooterController, XboxController.Button.kRightBumper.value)
+            .whileTrue(Commands.parallel(new RunCommand(() -> runConveyor(1), m_Intake), new RunCommand(() -> m_shooter.shoot(1), m_shooter)))
+            .onFalse(Commands.parallel(new RunCommand(() -> m_shooter.shoot(0), m_shooter), new RunCommand(() -> runConveyor(0), m_Intake)));
+        //This one is actually important:
+
+        // new JoystickButton(m_shooterController, XboxController.Button.kRightBumper.value)
+        //     .whileTrue(Commands.parallel(new RunCommand(() -> runConveyor(0.8), m_Intake), new RunCommand(() -> cameraShoot(true), m_shooter)))
+        //     .onFalse(Commands.parallel(new RunCommand(() -> cameraShoot(false), m_shooter), new RunCommand(() -> runConveyor(0), m_Intake)));
+
+
+        //trash:
         // new JoystickButton(m_shooterController, XboxController.Button.kLeftBumper.value)
         //     .whileTrue(new RunCommand(() -> m_shooter.calculate(),
         //      m_Intake)).onFalse(new RunCommand(() -> runShooter(0.0),
         //      m_Intake));
-        m_shooter.setDefaultCommand(
-        new RunCommand(
-            () -> runShooter(
-              m_shooterController.getLeftY()),
-            m_shooter)
-        );
+
+            //  new JoystickButton(m_shooterController, XboxController.Button.kRightBumper.value)
+            //  .whileTrue(new RunCommand(() -> runIntake(1),
+            //  m_Intake)).onFalse(new RunCommand(() -> runIntake(0),
+            //  m_Intake));
+
+        // m_shooter.setDefaultCommand(
+        // new RunCommand(
+        //     () -> runConveyor(
+        //       m_shooterController.getLeftY()),
+        //     m_shooter)
+        // );
         // new JoystickButton(m_shooterController, XboxController.Button.kLeftBumper.value)
         //     .whileTrue(new RunCommand(() -> m_Intake.spinrun(-1),
         //      m_Intake)).onFalse(new RunCommand(() -> m_Intake.spinrun(0.0),
@@ -174,21 +196,13 @@ public class RobotContainer {
   }
 
 
-  public void runShooter(double speed){
-    m_Intake.spinrun(speed);
+  public void runConveyor(double speed){
     m_shooter.conveyorrun(speed);
     m_shooter.vectorrun(speed);
-    // m_shooter.shoot(speed);
-    // m_Intake.controlrun(speed);
-  }
-
-  public void runOnlyShooter(){
-    m_shooter.rpmShoot(6);
   }
 
   public void robotcontainerperiodic(){
     m_Intake.periodic();
-    // m_Photon.photonPeriodic();
     m_shooter.periodic();
   }
 

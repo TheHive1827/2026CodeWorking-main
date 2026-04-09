@@ -103,6 +103,7 @@ public class PhotonSubsystem extends SubsystemBase {
                         TargetHeight = (PhotonConstants.ArenaTagHeight - PhotonConstants.CameraHeight);
                         targetVisible = true;
                         TargetID = target.getFiducialId();
+                        targetPitch = target.getSkew();
                         // targetPitch()
                         // targetX = target.getBestCameraToTarget().getX();
                         PhotonDistance = (PhotonConstants.CameraAprilHeight*Math.sin(targetPitch))/(Math.sin(90-targetPitch)); 
