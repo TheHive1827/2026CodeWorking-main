@@ -129,34 +129,32 @@ public class RobotContainer {
             m_robotDrive));
     // Shooter binds
         new JoystickButton(m_shooterController, XboxController.Button.kA.value)
-            .whileTrue(new RunCommand(() -> m_shooter.conveyorrun(XboxController.Button.kA.value),
-             m_shooter)).onFalse(new RunCommand(() -> m_shooter.conveyorrun(0.0),
+            .whileTrue(new RunCommand(() -> m_shooter.shoot(0.6),
+             m_shooter)).onFalse(new RunCommand(() -> m_shooter.shoot(0.0),
              m_shooter));
-
-        
              
              new JoystickButton(m_shooterController, XboxController.Button.kRightBumper.value)
-             .whileTrue(new RunCommand(() -> cameraShoot(),
+             .whileTrue(new RunCommand(() -> runShooter(1),
              m_Intake)).onFalse(new RunCommand(() -> runShooter(0),
              m_Intake));
-             /**
-             // new JoystickButton(m_shooterController, XboxController.Button.kY.value)
-             //     .whileTrue(new RunCommand(() -> m_Intake.controlrun(-0.3),
-             //      m_Intake)).onFalse(new RunCommand(() -> m_Intake.controlrun(0), m_Intake));
+
+             new JoystickButton(m_shooterController, XboxController.Button.kY.value)
+                 .whileTrue(new RunCommand(() -> m_Intake.controlrun(-0.3),
+                  m_Intake)).onFalse(new RunCommand(() -> m_Intake.controlrun(0), m_Intake));
      
-             //              new JoystickButton(m_shooterController, XboxController.Button.kX.value)
-             //     .whileTrue(new RunCommand(() -> m_Intake.controlrun(0.3),
-             //      m_Intake)).onFalse(new RunCommand(() -> m_Intake.controlrun(0), m_Intake));
+                          new JoystickButton(m_shooterController, XboxController.Button.kX.value)
+                 .whileTrue(new RunCommand(() -> m_Intake.controlrun(0.3),
+                  m_Intake)).onFalse(new RunCommand(() -> m_Intake.controlrun(0), m_Intake));
      
-             // new JoystickButton(m_shooterController, XboxController.Button.kLeftBumper.value)
-             //     .whileTrue(new RunCommand(() -> m_Intake.spinrun(1),
-             //      m_Intake)).onFalse(new RunCommand(() -> m_Intake.spinrun(0.0),
-             //      m_Intake));
+             new JoystickButton(m_shooterController, XboxController.Button.kLeftBumper.value)
+                 .whileTrue(new RunCommand(() -> m_Intake.spinrun(1),
+                  m_Intake)).onFalse(new RunCommand(() -> m_Intake.spinrun(0.0),
+                  m_Intake));
+
         // new JoystickButton(m_shooterController, XboxController.Button.kLeftBumper.value)
         //     .whileTrue(new RunCommand(() -> m_shooter.calculate(),
         //      m_Intake)).onFalse(new RunCommand(() -> runShooter(0.0),
-        //      m_Intake));**/
-          
+        //      m_Intake));
         m_shooter.setDefaultCommand(
         new RunCommand(
             () -> runShooter(
@@ -169,14 +167,14 @@ public class RobotContainer {
         //      m_Intake));
 
           // new JoystickButton(m_shooterController, XboxController.Button.kA.value)
-          //   .whileTrue(new RunCommand(() -> m_shooter.shoot(),
+          //   .whileTrue(new RunCommand(() -> m_shooter.shoot(1),
           //    m_Intake)).onFalse(new RunCommand(() -> m_shooter.stop(),
           //    m_Intake));
 
         
-        // new JoystickButton(m_shooterController, XboxController.Button.kY.value)
-        //     .whileTrue(new RunCommand(() -> runShooter(-1),
-        //      m_Intake)).onFalse(new RunCommand(() -> runShooter(0.0),
+        // new JoystickButton(m_shooterController, XboxController.Button.kB.value)
+        //     .whileTrue(new RunCommand(() -> m_shooter.rpmShoot(1),
+        //      m_Intake)).onFalse(new RunCommand(() -> m_shooter.rpmShoot(0.0),
         //      m_Intake));
 
  
@@ -184,11 +182,15 @@ public class RobotContainer {
 
 
   public void runShooter(double speed){
-    // m_Intake.spinrun(speed);
+    m_Intake.spinrun(speed);
     m_shooter.conveyorrun(speed);
     m_shooter.vectorrun(speed);
-    m_shooter.shoot(speed);
+    // m_shooter.shoot(speed);
     // m_Intake.controlrun(speed);
+  }
+
+  public void runOnlyShooter(){
+    m_shooter.rpmShoot(6);
   }
 
   public void robotcontainerperiodic(){

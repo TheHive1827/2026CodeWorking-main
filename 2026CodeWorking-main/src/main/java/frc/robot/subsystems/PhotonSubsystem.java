@@ -37,21 +37,17 @@ import frc.robot.subsystems.ShooterSubsystem;
 
 public class PhotonSubsystem extends SubsystemBase {
     
-    PhotonCamera camera = new PhotonCamera("photonvision");
+    PhotonCamera camera = new PhotonCamera("Camera_Module_v1");
     
     // private final PhotonCamera photonCamera;
     boolean See;
     PhotonTrackedTarget target;
     double DistanceX = 1;
-    double IDS[];
-    double Yaws[];
-    double Pitchs[];
-    double DistanceY = 1;
-    double DistanceZ = 1;
+    double Stage=0;
     boolean targetVisible = false;
-     double targetYaw = 0.0;
-    double targetPitch = 0.0;
-    double TargetHeight = 0.0;
+     double targetYaw;
+    double targetPitch;
+    double TargetHeight;
     // var camToTarget = target.getBestCameraToTarget();
     public double PhotonDistance = 0.0; 
     double targetX;
@@ -77,35 +73,41 @@ public class PhotonSubsystem extends SubsystemBase {
 // }
 
     public void photonPeriodic(){
-        
         read();
+        // SmartDashboard.putNumber("Stage: ", Stage);
+        // SmartDashboard.putNumber("yaw", targetYaw);
+        // SmartDashboard.putNumber("pitch", targetPitch);
+        // SmartDashboard.putNumber("TargetID", TargetID);
+        // SmartDashboard.putNumber("target x", targetX);
     }
 
     public void read(){
         var results = camera.getAllUnreadResults();
-        PhotonDistance = SmartDashboard.getNumber("Distance: ", 0);
+        // PhotonDistance = SmartDashboard.getNumber("Distance: ", 0);
         if (!results.isEmpty()) {
+            Stage = 2;
             // Camera processed a new frame since last
             // Get the last one in the list.
             // targetX;
             var result = results.get(results.size() - 1);
             if (result.hasTargets()) {
+                Stage = 3;
                 // At least one AprilTag was seen by the camera
                 for (PhotonTrackedTarget target : result.getTargets()) { 
-                    SmartDashboard.putNumber("Target ID: ", target.getFiducialId());
+                    // SmartDashboard.putNumber("Target ID: ", target.getFiducialId());
                     if (target.getFiducialId() >= 0) {
+                        Stage = 4;
                         // If Tag 16, this happens.
                         targetYaw = target.getYaw();
-                        targetPitch = target.getPitch();
+                        targetPitch = target.getBestCameraToTarget().getX();
                         TargetHeight = (PhotonConstants.ArenaTagHeight - PhotonConstants.CameraHeight);
                         targetVisible = true;
                         TargetID = target.getFiducialId();
                         // targetPitch()
-
-                        SmartDashboard.putNumber("yaw", targetYaw);
-                        SmartDashboard.putNumber("pitch", targetPitch);
+                        // targetX = target.getBestCameraToTarget().getX();
                         PhotonDistance = (PhotonConstants.CameraAprilHeight*Math.sin(targetPitch))/(Math.sin(90-targetPitch)); 
-                        SmartDashboard.putNumber("Distance to tag: ", PhotonDistance);                       
+                        SmartDashboard.putNumber("Distance to tag: ", PhotonDistance);                      
+                        SmartDashboard.putNumber("Camera X", targetPitch); 
                         // angleT = 90.0 - targetPitch.toDegrees();
                         // 3.19.2026, I probably lost my headphones                       // HypotenuseSquared = (target.getBestCameraToTarget().getX() * target.getBestCameraToTarget().getX() + target.getBestCameraToTarget().getY() * target.getBestCameraToTarget().getY());
                         // PhotonDistance = (Math.sqrt((target.getBestCameraToTarget().getX() * target.getBestCameraToTarget().getX() + target.getBestCameraToTarget().getY() * target.getBestCameraToTarget().getY())));
@@ -120,6 +122,7 @@ public class PhotonSubsystem extends SubsystemBase {
                     TargetHeight = 0.0;
                     // PhotonDistance = 0.0; 
                     TargetID = 0;
+                    Stage = 1;
                 }
             }
             
@@ -127,4 +130,4 @@ public class PhotonSubsystem extends SubsystemBase {
 }
 
 // R.I.P. Limelight 3 = 3-25-2026.
-// nvm we resurrected you gng   
+// nvm we resurrected you gng  
